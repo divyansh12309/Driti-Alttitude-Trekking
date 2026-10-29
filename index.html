@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#102a26">
+    <title>DRITI | Altitude Trekking</title>
+    <link rel="stylesheet" href="newfile.css">
+    <script src="app.js" defer></script>
+</head>
+<body>
+    <header class="site-header">
+        <a class="brand" href="#" aria-label="DRITI Altitude Trekking home">
+            <img class="brand-logo" src="dr-iti-logo.jpg" alt="DRITI Altitude Trekking">
+        </a>
+        <div class="header-actions">
+            <span class="header-note">A little preparation goes a long way.</span>
+            <button id="theme-toggle" class="theme-toggle" type="button" aria-pressed="false">🌙 Dark mode</button>
+        </div>
+    </header>
+
+    <main class="page-shell">
+        <section class="hero">
+            <p class="eyebrow">YOUR MOUNTAIN COMPANION</p>
+            <h1>Plan well. Trek safely.</h1>
+            <p>Prepare your gear, check in with your body, and keep useful safety tools close at hand.</p>
+            <a class="hero-cta" href="#trip-planner">Start planning <span aria-hidden="true">↓</span></a>
+            <div class="trail-tip">
+                <p><strong>Trail tip</strong> <span id="trail-tip-text" aria-live="polite">Tell someone your route and expected return time before you set off.</span></p>
+                <button id="new-tip" class="button button-secondary" type="button">Another tip ↻</button>
+            </div>
+        </section>
+
+        <nav class="quick-nav" aria-label="Jump to a trekking tool">
+            <a href="#trip-planner">🗺️ Trip planner</a>
+            <a href="#health-check">💚 Health check</a>
+            <a href="#water-reminder">💧 Water</a>
+            <a href="#acclimatization">⏱️ Rest timer</a>
+            <a href="#emergency-sos">🆘 Emergency</a>
+        </nav>
+
+        <section class="planner-grid" aria-label="Trekking tools">
+            <article class="panel trip-panel" id="trip-planner">
+                <div class="panel-heading">
+                    <span class="step-number">01</span>
+                    <div><h2>Trekking map &amp; pack planner</h2><p>Find your mountain, check a general pack-weight target, and review key gear.</p></div>
+                </div>
+                <div class="trip-workspace">
+                    <form id="trip-form" class="form-grid">
+                        <label class="field field-wide">Mountain or trail
+                            <input id="mountain" name="mountain" type="text" placeholder="e.g. Mount Rainier" required>
+                        </label>
+                        <label class="field">Planned altitude (m)
+                            <input id="trip-altitude" name="altitude" type="number" min="0" max="9000" value="3000" required>
+                        </label>
+                        <label class="field">Your body mass (kg)
+                            <input id="body-mass" name="bodyMass" type="number" min="1" max="300" step="0.1" placeholder="e.g. 68" required>
+                        </label>
+                        <label class="field field-wide">Backpack weight (kg)
+                            <input id="pack-weight" name="packWeight" type="number" min="0" max="100" step="0.1" placeholder="e.g. 12" required>
+                        </label>
+                        <button class="button button-primary field-wide" type="submit">Check my pack</button>
+                    </form>
+                    <div id="pack-result" class="result-box" aria-live="polite">
+                        <p>Enter your trip details to see a planning estimate.</p>
+                    </div>
+                    <div id="map-preview" class="map-preview" hidden>
+                        <iframe id="trek-map" title="Google Maps trek search" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+                    </div>
+                    <p id="map-hint" class="map-hint" aria-live="polite">Enter a trek or mountain name above to preview it on Google Maps.</p>
+                    <p class="map-attribution-note">Map results are approximate. Confirm the specific trail, access, and current conditions before setting out.</p>
+                    <a id="map-link" class="button button-secondary map-link" href="https://maps.google.com/" target="_blank" rel="noopener noreferrer">Open Google Maps ↗</a>
+                </div>
+                <div class="gear-list">
+                    <div class="gear-heading">
+                        <div>
+                            <h3>Gear checklist</h3>
+                            <p id="gear-progress-label">0 of 5 packed</p>
+                        </div>
+                        <progress id="gear-progress" max="5" value="0" aria-label="Gear packed"></progress>
+                    </div>
+                    <ul>
+                        <li><label class="gear-item"><input type="checkbox" class="gear-check" data-gear="navigation"><span>Navigation: offline map, compass, and a charged phone or GPS</span></label></li>
+                        <li><label class="gear-item"><input type="checkbox" class="gear-check" data-gear="layers"><span>Weather-appropriate layers, rain and wind protection, and warm extras</span></label></li>
+                        <li><label class="gear-item"><input type="checkbox" class="gear-check" data-gear="water"><span>Water, a treatment method, and enough food for the route plus a reserve</span></label></li>
+                        <li><label class="gear-item"><input type="checkbox" class="gear-check" data-gear="safety"><span>First-aid kit, headlamp with spare power, sun protection, and emergency shelter</span></label></li>
+                        <li><label class="gear-item"><input type="checkbox" class="gear-check" data-gear="personal"><span>Broken-in footwear, extra socks, personal medication, and a repair kit</span></label></li>
+                    </ul>
+                    <p class="small-note">Pack needs depend on route, weather, duration, and experience. Check local conditions and required equipment before departure.</p>
+                </div>
+            </article>
+
+            <article class="panel health-panel" id="health-check">
+                <div class="panel-heading">
+                    <span class="step-number">02</span>
+                    <div><h2>Health check-in</h2><p>Record readings and review general warning guidance.</p></div>
+                </div>
+                <form id="health-form">
+                    <label class="field">Current altitude (m)
+                        <input id="current-altitude" type="number" min="0" max="9000" value="2500" required>
+                    </label>
+                    <label class="slider-label" for="spo2">
+                        <span>SpO₂ reading</span><output id="spo2-value" for="spo2">98%</output>
+                    </label>
+                    <input id="spo2" type="range" min="70" max="100" value="98">
+                    <label class="slider-label" for="heart-rate">
+                        <span>Heart rate</span><output id="heart-rate-value" for="heart-rate">80 BPM</output>
+                    </label>
+                    <input id="heart-rate" type="range" min="50" max="180" value="80">
+                    <button class="button button-primary" type="submit">Review readings</button>
+                </form>
+                <div id="health-result" class="result-box health-result" aria-live="polite">
+                    <p>Adjust the readings and choose “Review readings”.</p>
+                </div>
+                <p class="small-note">These are general warning flags, not a diagnosis or altitude-adjusted medical threshold. Consumer readings can be inaccurate. Symptoms matter more than a number: stop ascending if unwell and seek qualified help.</p>
+            </article>
+
+            <article class="panel water-panel" id="water-reminder">
+                <div class="panel-heading">
+                    <span class="step-number">03</span>
+                    <div><h2>Water reminder</h2><p>Gentle altitude-based reminders while this page is open.</p></div>
+                </div>
+                <label class="field">Current altitude (m)
+                    <input id="water-altitude" type="number" min="0" max="9000" value="2500" required>
+                </label>
+                <div class="reminder-summary">
+                    <span class="drop-icon" aria-hidden="true">滴</span>
+                    <p id="water-interval">Reminder every 45 minutes</p>
+                </div>
+                <p class="small-note">The interval is 45 minutes below 2,500 m, 30 minutes from 2,500–3,999 m, and 20 minutes from 4,000 m. A reminder is only a prompt: a small drink of around 150–250 ml may suit many people; adjust to thirst and conditions, and do not force excessive water.</p>
+                <div class="button-row">
+                    <button id="water-toggle" class="button button-primary" type="button">Start reminders</button>
+                    <button id="water-test" class="button button-secondary" type="button">Test reminder</button>
+                </div>
+                <p id="water-status" class="inline-status" aria-live="polite">Reminders are off.</p>
+            </article>
+
+            <article class="panel acclimatization-panel" id="acclimatization">
+                <div class="panel-heading">
+                    <span class="step-number">04</span>
+                    <div><h2>Acclimatization timer</h2><p>Set a rest reminder for your current elevation.</p></div>
+                </div>
+                <label class="field">Altitude where you are resting (m)
+                    <input id="rest-altitude" type="number" min="0" max="9000" value="3000" required>
+                </label>
+                <div class="timer-display" id="timer-display" aria-live="polite">24:00:00</div>
+                <p id="rest-guidance" class="timer-guidance">Planning reminder: 24 hours at this altitude.</p>
+                <p class="small-note">Planning estimate: 12 hours below 2,500 m; 24 hours at 2,500 m, adding 24 hours for each additional 1,000 m. This is not an exact medical requirement or clearance to ascend. Acclimatization needs vary; follow expert/local guidance and never climb higher with altitude-illness symptoms.</p>
+                <div class="button-row">
+                    <button id="timer-toggle" class="button button-primary" type="button">Start rest timer</button>
+                    <button id="timer-reset" class="button button-secondary" type="button">Reset</button>
+                </div>
+            </article>
+
+            <article class="panel emergency-panel" id="emergency-sos">
+                <div class="panel-heading">
+                    <span class="step-number">05</span>
+                    <div><h2>Emergency SOS</h2><p>Get your location and copy a message to share.</p></div>
+                </div>
+                <div class="location-card">
+                    <span class="location-pin" aria-hidden="true">◎</span>
+                    <div><strong>Your location</strong><p id="location-status" aria-live="polite">Location has not been requested.</p></div>
+                </div>
+                <button id="location-button" class="button button-secondary" type="button">Get my location</button>
+                <button id="sos-button" class="button button-sos" type="button">COPY SOS MESSAGE</button>
+                <p id="sos-status" class="inline-status" aria-live="polite">If readings indicate a possible concern, the page will ask your browser for location permission.</p>
+                <p class="small-note">Location accuracy varies, and sharing coordinates does not contact emergency services. Call your local emergency number directly when needed.</p>
+            </article>
+        </section>
+
+        <footer class="page-footer">
+            <p>DRITI is an informational planning aid, not a substitute for professional medical or mountain-safety advice.</p>
+            <p class="copyright">&copy; 2026 LPU Students. All rights reserved.</p>
+        </footer>
+        <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    </main>
+</body>
+</html>
